@@ -1,0 +1,264 @@
+import io.appium.java_client.AppiumBy;
+import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.time.Duration;
+import org.openqa.selenium.Rectangle;
+import org.testng.Assert;
+
+
+///
+public class mobileTesting {
+
+    private static final Logger log = LoggerFactory.getLogger(mobileTesting.class);
+    AppiumDriver driver;
+
+    // Menu
+    private final By Menu =
+            AppiumBy.androidUIAutomator("new UiSelector().text(\"Menu\")");
+
+    // Login Page from Menu
+    private final By LoginPage =
+            AppiumBy.androidUIAutomator("new UiSelector().text(\"Login\")");
+
+    // Email Field
+    private final By emailFiled =
+            AppiumBy.accessibilityId("input-email");
+
+    // Password Filed
+    private final By PasswordFiled =
+            AppiumBy.accessibilityId("input-password");
+
+    // Login Button
+    private final By LoginButton =
+            AppiumBy.androidUIAutomator("new UiSelector().text(\"LOGIN\")");
+
+    @BeforeClass
+    public void setup() throws URISyntaxException, MalformedURLException {
+        DesiredCapabilities caps = new DesiredCapabilities();
+
+        caps.setCapability("appium:platformName", "android");
+        caps.setCapability("appium:deviceName", "emulator-5554");
+        caps.setCapability("appium:automationName", "UiAutomator2");
+        caps.setCapability("appium:platformVersion", "17");
+
+        caps.setCapability(
+                "appium:app",
+                "C:\\Users\\Aska1\\IdeaProjects\\AppiumTest\\src\\main\\resources\\apk\\android.wdio.native.app.v2.2.0.apk"
+        );
+
+        driver = new AppiumDriver(
+                new URI("http://127.0.0.1:4723").toURL(),
+                caps
+        );
+    }
+    // Start Validate Menu Opens Successfully --------------------------
+    @Test(description = "Validate Menu Opens Successfully")
+    public void _01_ValidateMenuOpensSuccessfully() {
+
+        WebDriverWait wait =
+                new WebDriverWait(driver, Duration.ofSeconds(60));
+
+        // Wait for Menu button
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(Menu)
+        );
+
+        // Tap Menu
+        driver.findElement(Menu).click();
+
+        // Verify Menu panel is displayed
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(Menu)
+        );
+
+        System.out.println(
+                "TC-001 | Validate Menu Opens Successfully | PASS"
+        );
+    }
+    // End Validate Menu Opens Successfully --------------------------
+
+    // Start Validate Navigation to Login Page from Menu
+    @Test(description = "Validate Navigation to Login Page from Menu")
+    public void _02_ValidateNavigationToLoginPage() {
+
+        WebDriverWait wait =
+                new WebDriverWait(driver, Duration.ofSeconds(60));
+
+        // Wait for Login Page
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(LoginPage)
+        );
+
+        // Tap Login
+        driver.findElement(LoginPage).click();
+
+        // Verify Login Page
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(LoginPage)
+        );
+
+        System.out.println(
+                "TC-002 | Validate Navigation to Login Page from Menu | PASS"
+        );
+    }
+   // End Validate Navigation to Login Page from Menu
+
+
+   // Start Validate Login with Valid Credentials
+   @Test(description = "Validate Login with Valid Credentials")
+   public void _02_LoginWithValidCredentials() {
+
+       WebDriverWait wait =
+               new WebDriverWait(driver, Duration.ofSeconds(60));
+
+       // Wait for Login Page
+       wait.until(
+               ExpectedConditions.presenceOfElementLocated(LoginPage)
+       );
+
+       // Tap Login
+       driver.findElement(LoginPage).click();
+
+       // Verify Login Page
+       wait.until(
+               ExpectedConditions.visibilityOfElementLocated(LoginPage)
+       );
+
+       // Wait for Email Filed
+       wait.until(
+               ExpectedConditions.visibilityOfElementLocated(emailFiled));
+
+       //  Enter a valid email address
+       driver.findElement(emailFiled).sendKeys("FaridW@example.com");
+
+       // Wait for Email Filed
+       wait.until(
+               ExpectedConditions.visibilityOfElementLocated(PasswordFiled));
+
+       //  Enter a valid password
+       driver.findElement(PasswordFiled).sendKeys("9^%sP$uF7r@k");
+
+       // Wait for Login button.
+       wait.until(
+               ExpectedConditions.visibilityOfElementLocated(LoginButton));
+
+       //  Tap the Login button.
+       driver.findElement(LoginButton).click();
+
+       System.out.println(
+               "TC-002 | Login with Valid Credentials | PASS"
+       );
+       }  //  End Validate Login with Valid Credentials
+
+
+    @Test(
+            description = "Validate Login Page Layout and Alignment"
+    )
+    public void _03_ValidateLoginPageLayoutAndAlignment() {
+
+        WebDriverWait wait =
+                new WebDriverWait(driver, Duration.ofSeconds(60));
+
+        // Open Menu
+        wait.until(
+                ExpectedConditions.elementToBeClickable(Menu)
+        );
+
+        driver.findElement(Menu).click();
+
+        // Click Login
+        wait.until(
+                ExpectedConditions.elementToBeClickable(LoginPage)
+        );
+
+        driver.findElement(LoginPage).click();
+
+        // Now wait for Login page elements
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(emailFiled)
+        );
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(PasswordFiled)
+        );
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(LoginButton));
+
+        //  Tap the Login button.
+        driver.findElement(LoginButton).click();
+
+        System.out.println(
+                "TC-003 | Validate Login Page Layout and Alignment | PASS"
+        );
+    }
+
+
+    // InValid Test Cases
+    @Test(description = "Validate Login Rejection with Invalid Email")
+    public void _01_ValidateLoginRejection() {
+
+        WebDriverWait wait =
+                new WebDriverWait(driver, Duration.ofSeconds(60));
+
+        // Wait for Menu button
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(Menu)
+        );
+
+        // Tap Menu
+        driver.findElement(Menu).click();
+
+        // Open the Login page.
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(LoginPage)
+        );
+        // Click Login Page
+        driver.findElement(LoginPage).click();
+
+        // Wait For email
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(emailFiled)
+        );
+        // Enter an invalid email
+        driver.findElement(emailFiled)
+                .sendKeys("john..smith@example.com");
+
+
+        // Wait For Password
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(PasswordFiled)
+        );
+        // Enter an invalid email
+        driver.findElement(PasswordFiled)
+                .sendKeys("Ab2@Abcd1234!X");
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(LoginButton));
+
+        //  Tap the Login button.
+        driver.findElement(LoginButton).click();
+
+
+
+        System.out.println(
+                "TC-001 | Validate Login Rejection with Invalid Email | PASS"
+        );
+    }
+    // End Validate Menu Opens Successfully --------------------------
+}
+
+
+
